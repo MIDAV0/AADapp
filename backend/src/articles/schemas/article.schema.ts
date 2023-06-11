@@ -13,6 +13,8 @@ export class Article {
   author: string;
   @Prop()
   body: string;
+  @Prop()
+  created: Date;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);
