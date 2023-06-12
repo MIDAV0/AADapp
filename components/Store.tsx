@@ -42,6 +42,41 @@ const Store: React.FC<Props> = ({ smartAccount, provider }) => {
         console.log(txResponse)
     }
 
+    const purchaseArticle = async (articleId: Number) => {
+        // Check if article is available
+        const article = await storeContract.articles(articleId)
+        if (article.creator === ethers.constants.AddressZero) return
+
+        // Get article price
+        const articlePrice = article.price
+
+
+        const purchaseArticleTx = await storeContract.populateTransaction.purchaseArticle(articleId)
+
+        const tx = {
+            to: storeAddress,
+            value: ethers.utils.parseEther(articlePrice.toString()),
+            data: purchaseArticleTx.data,
+        }
+        const txResponse = await smartAccount.sendTransaction( {transaction: tx} )
+        console.log(txResponse)
+    }
+
+    const withdrawRoyalties = async () => {
+        const withdrawRoyaltiesTx = await storeContract.populateTransaction.withdrawRoyalties()
+        const tx = {
+            to: storeAddress,
+            data: withdrawRoyaltiesTx,
+        }
+        const txResponse = await smartAccount.sendTransaction( {transaction: tx} )
+        console.log(txResponse)
+    }
+
+    const getRoyaltiesData = async () => {
+        const royaltiesData = await storeContract.royalties(smartAccount.address)
+        return royaltiesData
+    }
+
     return (
         <div>
             <button onClick={() => createArticle(1, 10, "First article")}>
