@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import NavBar from "../components/navbar";
+import ArticleBodyContent from "../components/articleBodyContent";
 
 const Article = () => {
 
@@ -7,6 +8,7 @@ const Article = () => {
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <NavBar />
+        <ArticleBodyContent />
       </Suspense>
     </div>
   );
