@@ -5,6 +5,7 @@ import { ChainId } from "@biconomy/core-types";
 import SocialLogin from "@biconomy/web3-auth";
 import SmartAccount from "@biconomy/smart-account";
 import Counter from "./Counter";
+import Store from "./Store";
 
 const Home = () => {
   const [provider, setProvider] = useState<any>();
@@ -105,7 +106,7 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <h1>Biconomy SDK Next.js Web3Auth Example</h1>
+        <h1>AADapp</h1>
         <button onClick={!account ? connectWeb3 : disconnectWeb3}>
           {!account ? "Connect Wallet" : "Disconnect Wallet"}
         </button>
@@ -130,6 +131,12 @@ const Home = () => {
             <div>
                 <h1>Counter</h1>
                 <Counter smartAccount={smartAccount} provider={provider}/>
+            </div>
+        }
+        { scwAddress && smartAccount && provider &&
+            <div>
+                <h1>Article</h1>
+                <Store smartAccount={smartAccount} provider={provider}/>
             </div>
         }
 
