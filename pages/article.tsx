@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import NavBar from "../components/navbar";
-import ArticleBodyContent from "../components/articleBodyContent";
+import ArticleBodyContent from "../components/articleBodyContent";git 
 
 const Article = () => {
 
