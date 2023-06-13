@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Link from 'next/link'
 
 const PageBody = () => (
     <div className="container mx-auto flex flex-wrap py-6">
@@ -23,7 +23,7 @@ const PageBody = () => (
                             Article Title
                         </a>
                     </h1>
-                    <button>Press</button>  
+                    <Link href="/article"><button className="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-2 px-4 rounded-full">Press</button></Link>{' '}{' '} 
                     <p className="text-grey-darker text-sm">
                         11/1/19
                     </p>
@@ -84,7 +84,7 @@ const PageBody = () => (
 
 
         </div>
-=
+
         <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
 
             <article className="overflow-hidden rounded-lg shadow-lg">

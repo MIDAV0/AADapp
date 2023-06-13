@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import NavBar from "../components/navbar";
-import PageBody from "../components/pagebody";
+import PageBody from "../components/homePageBody";
 
 const Index = () => {
   const SocialLoginDynamic = dynamic(
