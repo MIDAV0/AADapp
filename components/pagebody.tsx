@@ -23,7 +23,7 @@ const PageBody = () => (
                             Article Title
                         </a>
                     </h1>
-                    <button><Link href="/article"><button className="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-2 px-4 rounded-full">Press</button></Link>{' '}{' '}</button>  
+                    <Link href="/article"><button className="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-2 px-4 rounded-full">Press</button></Link>{' '}{' '} 
                     <p className="text-grey-darker text-sm">
                         11/1/19
                     </p>
