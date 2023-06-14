@@ -6,6 +6,8 @@ import SocialLogin from "@biconomy/web3-auth";
 import SmartAccount from "@biconomy/smart-account";
 import Counter from "./Counter";
 import Store from "./Store";
+import NavBar from "./navbar";
+import PageBody from "./homePageBody";
 
 const Home = () => {
   const [provider, setProvider] = useState<any>();
@@ -16,6 +18,7 @@ const Home = () => {
   const [socialLoginSDK, setSocialLoginSDK] = useState<SocialLogin | null>(
     null
   );
+  const [balance, setBalance] = useState<any>();
 
   const connectWeb3 = useCallback(async () => {
     if (typeof window === "undefined") return;
@@ -91,11 +94,13 @@ const Home = () => {
             },
           ],
       });
+      setInterval(async () => {}, 1000);
       await smartAccount.init();
       const context = smartAccount.getSmartAccountContext();
       setScwAddress(context.baseWallet.getAddress());
       setSmartAccount(smartAccount);
       setScwLoading(false);
+      //getBalance(smartAccount);
     }
     if (!!provider && !!account) {
       setupSmartAccount();
@@ -103,45 +108,50 @@ const Home = () => {
     }
   }, [account, provider]);
 
+
+  async function getBalance(sma: SmartAccount) {
+    if (!sma) return
+    console.log('smartAccount: ', sma)
+    /* this function fetches the balance of the connected smart wallet */
+    const balanceParams =  {
+      chainId: ChainId.POLYGON_MUMBAI,
+      eoaAddress: sma.address,
+      tokenAddresses: [],
+    }
+    console.log('smartAccount: ', sma)
+    /* use getAlltokenBalances and getTotalBalanceInUsd query the smartAccount */
+    const balFromSdk = await sma.getAlltokenBalances(balanceParams)
+    console.log('balFromSdk::: ', balFromSdk)
+    const usdBalFromSdk = await sma.getTotalBalanceInUsd(balanceParams)
+    setBalance(balFromSdk.data)
+  }
+
+  // { scwAddress && smartAccount && provider &&
+  //   <div>
+  //       <h1>Article</h1>
+  //       <Store smartAccount={smartAccount} provider={provider}/>
+  //   </div>
+  // }
+
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1>AADapp</h1>
-        <button onClick={!account ? connectWeb3 : disconnectWeb3}>
-          {!account ? "Connect Wallet" : "Disconnect Wallet"}
-        </button>
-
-        {account && (
-          <div>
-            <h2>EOA Address</h2>
-            <p>{account}</p>
-          </div>
-        )}
-
-        {scwLoading && <h2>Loading Smart Account...</h2>}
-
-        {scwAddress && (
-          <div>
-            <h2>Smart Account Address</h2>
-            <p>{scwAddress}</p>
-          </div>
-        )}
-
-        { scwAddress && smartAccount && provider &&
+    <div>
+      <NavBar 
+        connectWallet={connectWeb3}
+        disconnectWallet={disconnectWeb3}
+        account={account}
+        scwAddress={scwAddress}
+      />
+      <div className={styles.container}>
+        <div className="border-2 ">
+          <h1>Welcome to Crypto News</h1>
+          {!provider &&
             <div>
-                <h1>Counter</h1>
-                <Counter smartAccount={smartAccount} provider={provider}/>
+              <p>Connect Wallet to continue</p>
             </div>
-        }
-        { scwAddress && smartAccount && provider &&
-            <div>
-                <h1>Article</h1>
-                <Store smartAccount={smartAccount} provider={provider}/>
-            </div>
-        }
-
-
-      </main>
+          }
+        </div>
+      </div>
+      <PageBody />
     </div>
   );
 };
