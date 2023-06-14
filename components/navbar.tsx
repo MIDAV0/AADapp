@@ -4,11 +4,14 @@ import Head from 'next/head'
 
 
 type Props = {
-  children?: ReactNode
+  connectWallet: () => void
+  disconnectWallet: () => void
+  account?: string
+  scwAddress?: string
   title?: string
 }
 
-const NavBar = ({ children, title = 'Navbar' }: Props) => (
+const NavBar = ({ connectWallet, disconnectWallet, account, scwAddress, title = 'Navbar' }: Props) => (
   <div>
     <Head>
       <title>{title}</title>
@@ -44,12 +47,30 @@ const NavBar = ({ children, title = 'Navbar' }: Props) => (
         <li>
           <a href="#" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
         </li>
+        <li>
+          {
+            !account ?
+              <button className='btn' onClick={connectWallet}> Connect Wallet </button>
+              :   
+              !scwAddress ?  
+                <span className="loading loading-bars loading-sm"></span>
+              :
+              <div className="join">
+                  <div className="join-item dropdown dropdown-hover">
+                    <label tabIndex={0} className="btn">{`${scwAddress?.slice(0,6)}...${scwAddress?.slice(-5)}`}</label>
+                    <ul tabIndex={0} className="dropdown-content menu p-2 mt-2 border-2 border-cyan-500 rounded-md shadow bg-base-100">
+                      <li>{scwAddress}</li>
+                    </ul>
+                  </div>
+                  <button onClick={disconnectWallet} className="btn join-item bg-red-500">✕</button>
+              </div>
+          }
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 </header>
-    {children}
       <hr />
   </div>
 )
