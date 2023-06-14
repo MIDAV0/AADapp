@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import SmartAccount from "@biconomy/smart-account";
 
-const storeAddress = "0x13b759f63D80323F4517A4A000a94F96a71c3443"
+const storeAddress = "0x6123a1D498fED2E89BC311B79E9edF61AEBf137c"
 
 export const createArticle = async (
         uid: Number, 
@@ -13,7 +13,7 @@ export const createArticle = async (
     const convertedTitle = ethers.utils.formatBytes32String(title)
     const createArticleTx = await storeContract.populateTransaction.createArticle(
         uid,
-        price,
+        ethers.utils.parseEther(price.toString()),
         convertedTitle
     )
     const tx = {
@@ -31,20 +31,22 @@ export const purchaseArticle = async (
     ) => {
     // Check if article is available
     const article = await storeContract.articles(articleId)
+    console.log(article)
     if (article.creator === ethers.constants.AddressZero) return
 
     // Get article price
     const articlePrice = article.price
 
-
     const purchaseArticleTx = await storeContract.populateTransaction.purchaseArticle(articleId)
 
     const tx = {
         to: storeAddress,
-        value: ethers.utils.parseEther(articlePrice.toString()),
+        value: articlePrice,
         data: purchaseArticleTx.data,
+        gasLimit: 1000000,
     }
     const txResponse = await smartAccount.sendTransaction( {transaction: tx} )
+    await txResponse.wait()
     console.log(txResponse)
 }
 
@@ -67,4 +69,16 @@ export const getRoyaltiesData = async (
 ) => {
     const royaltiesData = await storeContract.royalties(smartAccount.address)
     return royaltiesData
+}
+
+export const getArticleOwner = async (
+        articleId: Number,
+        storeContract: ethers.Contract,
+        smartAccount: SmartAccount,
+        setArticleOwner: Function
+) => {
+    if (!smartAccount) return
+    const articleHash = ethers.utils.solidityKeccak256(["uint", "address"], [articleId, smartAccount.address])
+    const articleOwner = await storeContract.ownedArticles(articleHash)
+    setArticleOwner(articleOwner[1].toString())
 }
