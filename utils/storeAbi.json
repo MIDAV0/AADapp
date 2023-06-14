@@ -125,29 +125,17 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "articleHash",
-				"type": "bytes32"
+				"internalType": "uint256",
+				"name": "articleId",
+				"type": "uint256"
 			}
 		],
 		"name": "getOwnedArticle",
 		"outputs": [
 			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					}
-				],
-				"internalType": "struct Store.Article",
+				"internalType": "address",
 				"name": "",
-				"type": "tuple"
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
