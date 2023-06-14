@@ -1,10 +1,30 @@
 import Link from 'next/link'
-import React from 'react'
-import { createArticle, purchaseArticle } from "../utils/contractFunctions";
+import React, { useEffect, useState } from 'react'
+import { createArticle, getArticleOwner, purchaseArticle } from "../utils/contractFunctions";
 
 
 const ArticleCard = ({ article, storeContract, smartAccount }) => {
     const date = new Date(article.date)
+    const [articleOwner, setArticleOwner] = useState<string>("")
+    const [isOwner, setIsOwner] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    useEffect(() => {
+        setIsLoading(true)
+        getArticleOwner(
+            Number(article.uid),
+            storeContract,
+            smartAccount,
+            setArticleOwner
+        )  
+    }, [smartAccount])
+
+    useEffect(() => {
+        if (articleOwner === smartAccount?.address) {
+            setIsOwner(true)
+        }
+        setIsLoading(false)
+    }, [articleOwner])
     
     return (
         <div key={article.uid} className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
@@ -63,7 +83,10 @@ const ArticleCard = ({ article, storeContract, smartAccount }) => {
                         smartAccount
                     )}>
                     purchase
-                    </button>
+                </button>
+                { isLoading && <p>Loading...</p>}
+                { isOwner && <p>Owner</p>}
+                { !isOwner && !!smartAccount && <p>Not Owner</p>}
         </div>
     )
 }
