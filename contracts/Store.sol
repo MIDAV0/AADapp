@@ -33,7 +33,7 @@ contract Store {
     function purchaseArticle(uint articleId) external payable {
         bytes32 articleHash = keccak256(abi.encodePacked(articleId, msg.sender));
         // Check ownership
-        require(articles[articleId].creator != address(0), "Article does not exist"); 
+        require(articles[articleId].creator != address(0), "Article does not exist");
         require(ownedArticles[articleHash].owner != msg.sender, "You already purchased this article");
         require(msg.value >= articles[articleId].price, "Incorrect price");
         uint id = totalOwnedArticles++;
@@ -62,7 +62,8 @@ contract Store {
         return articles[uid];
     }
 
-    function getOwnedArticle(bytes32 articleHash) external view returns(Article memory) {
-        return ownedArticles[articleHash];
+    function getOwnedArticle(uint articleId) external view returns(address) {
+        bytes32 articleHash = keccak256(abi.encodePacked(articleId, msg.sender));
+        return ownedArticles[articleHash].owner;
     }
 }
