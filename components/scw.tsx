@@ -22,7 +22,7 @@ const Home = () => {
   const [balance, setBalance] = useState<any>();
   const [storeContract, setStoreContract] = useState<any>(null)
 
-  const storeAddress = "0x13b759f63D80323F4517A4A000a94F96a71c3443"
+  const storeAddress = "0x6123a1D498fED2E89BC311B79E9edF61AEBf137c"
 
 
   const connectWeb3 = useCallback(async () => {
