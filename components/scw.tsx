@@ -10,7 +10,6 @@ import NavBar from "./navbar";
 import PageBody from "./homePageBody";
 import abi from "../utils/storeAbi.json";
 
-
 const Home = () => {
   const [provider, setProvider] = useState<any>();
   const [account, setAccount] = useState<string>();
@@ -167,7 +166,10 @@ const Home = () => {
           }
         </div>
       </div>
-      <PageBody />
+      <PageBody 
+        smartAccount={smartAccount}
+        storeContract={storeContract}
+      />
     </div>
   );
 };
