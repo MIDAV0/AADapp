@@ -8,6 +8,8 @@ import Counter from "./Counter";
 import Store from "./Store";
 import NavBar from "./navbar";
 import PageBody from "./homePageBody";
+import abi from "../utils/storeAbi.json";
+
 
 const Home = () => {
   const [provider, setProvider] = useState<any>();
@@ -19,6 +21,10 @@ const Home = () => {
     null
   );
   const [balance, setBalance] = useState<any>();
+  const [storeContract, setStoreContract] = useState<any>(null)
+
+  const storeAddress = "0x13b759f63D80323F4517A4A000a94F96a71c3443"
+
 
   const connectWeb3 = useCallback(async () => {
     if (typeof window === "undefined") return;
@@ -107,6 +113,16 @@ const Home = () => {
       console.log("Provider...", provider);
     }
   }, [account, provider]);
+
+  useEffect(() => {
+    if (!provider) return
+    const contract = new ethers.Contract(
+        storeAddress,
+        abi,
+        provider,
+    )
+    setStoreContract(contract)
+  }, [provider])
 
 
   async function getBalance(sma: SmartAccount) {
