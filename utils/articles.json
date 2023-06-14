@@ -1,0 +1,32 @@
+[
+    {
+        "uid": 10001,
+        "title": "Bitcoin",
+        "description": "Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator.",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png",
+        "price": 0.05,
+        "author": "Satoshi Nakamoto",
+        "date": "2009-01-03T18:15:05.000Z",
+        "content": "Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator."
+    },
+    {
+        "uid": 10002,
+        "title": "Ethereum",
+        "description":"Ethereum is an open-source, public, blockchain-based distributed computing platform and operating system featuring smart contract (scripting) functionality.",
+        "image": "https://d33wubrfki0l68.cloudfront.net/fcd4ecd90386aeb50a235ddc4f0063cfbb8a7b66/4295e/static/bfc04ac72981166c740b189463e1f74c/40129/eth-diamond-black-white.jpg",
+        "price": 0.05,
+        "author": "Vitalik Buterin",
+        "date": "2015-07-30T18:15:05.000Z",
+        "content": "Ethereum is an open-source, public, blockchain-based distributed computing platform and operating system featuring smart contract (scripting) functionality."
+    },
+    {
+        "uid": 10003,
+        "title": "Ripple",
+        "description": "Ripple is a real-time gross settlement system (RTGS), currency exchange and remittance network by Ripple. Also called the Ripple Transaction Protocol (RTXP) or Ripple protocol.",
+        "image": "https://st4.depositphotos.com/14124396/25261/i/600/depositphotos_252610748-stock-photo-coin-cryptocurrency-ripple-on-the.jpg",
+        "price": 0.05,
+        "author": "Ryan Fugger",
+        "date": "2012-02-02T18:15:05.000Z",
+        "content": "Ripple is a real-time gross settlement system (RTGS), currency exchange and remittance network by Ripple. Also called the Ripple Transaction Protocol (RTXP) or Ripple protocol."
+    }
+]
