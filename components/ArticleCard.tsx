@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import React from 'react'
+import { createArticle, purchaseArticle } from "../utils/contractFunctions";
 
-const ArticleCard = ({ article }) => {
+
+const ArticleCard = ({ article, storeContract, smartAccount }) => {
     const date = new Date(article.date)
     
     return (
@@ -54,6 +56,14 @@ const ArticleCard = ({ article }) => {
                     </div>
                 </dialog>
                 <button className="btn" onClick={()=>document.getElementById("my_modal_5").showModal()}>open modal</button>
+                <button className="btn" onClick={()=>
+                    purchaseArticle(
+                        Number(article.uid),
+                        storeContract,
+                        smartAccount
+                    )}>
+                    purchase
+                    </button>
         </div>
     )
 }
