@@ -9,6 +9,7 @@ import Store from "./Store";
 import NavBar from "./navbar";
 import PageBody from "./homePageBody";
 import abi from "../utils/storeAbi.json";
+import { getRoyaltiesData, withdrawRoyalties } from "../utils/contractFunctions";
 
 const Home = () => {
   const [provider, setProvider] = useState<any>();
@@ -21,6 +22,8 @@ const Home = () => {
   );
   const [balance, setBalance] = useState<any>();
   const [storeContract, setStoreContract] = useState<any>(null)
+
+  const [royaltiesData, setRoyaltiesData] = useState<any>(null)
 
   const storeAddress = "0x6123a1D498fED2E89BC311B79E9edF61AEBf137c"
 
@@ -123,6 +126,14 @@ const Home = () => {
     setStoreContract(contract)
   }, [provider])
 
+  useEffect(() => {
+    if (!storeContract) return
+    getRoyaltiesData(
+      storeContract,
+      smartAccount,
+      setRoyaltiesData
+    )
+  }, [account, smartAccount])
 
   async function getBalance(sma: SmartAccount) {
     if (!sma) return
@@ -163,6 +174,23 @@ const Home = () => {
             <div className="flex">
               <p className="bg-red-600 rounded-lg p-2 text-white font-bold text-xl">Connect Wallet to continue</p>
             </div>
+          }
+          {
+            provider && smartAccount &&
+              <div className="flex items-center gap-6">
+                <p>Available royalties:  <b>{royaltiesData}</b> MATIC</p>
+                <button
+                  className="btn btn-sm bg-yellow-300 my-auto"
+                  disabled={Number(royaltiesData) === 0}
+                  onClick={() => withdrawRoyalties(
+                    storeContract,
+                    smartAccount,
+                    setRoyaltiesData
+                  )}
+                >
+                  Withdraw
+                </button>
+              </div>
           }
         </div>
       </div>
