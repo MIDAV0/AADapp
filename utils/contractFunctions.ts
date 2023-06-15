@@ -27,7 +27,8 @@ export const createArticle = async (
 export const purchaseArticle = async (
         articleId: Number,
         storeContract: ethers.Contract,
-        smartAccount: SmartAccount
+        smartAccount: SmartAccount,
+        setIsPurchased: Function
     ) => {
     // Check if article is available
     const article = await storeContract.articles(articleId)
@@ -47,28 +48,35 @@ export const purchaseArticle = async (
     }
     const txResponse = await smartAccount.sendTransaction( {transaction: tx} )
     await txResponse.wait()
+    setIsPurchased(true)
     console.log(txResponse)
 }
 
-// const withdrawRoyalties = async (
-//         storeContract: ethers.Contract,
-//         smartAccount: SmartAccount
-// ) => {
-//     const withdrawRoyaltiesTx = await storeContract.populateTransaction.withdrawRoyalties()
-//     const tx = {
-//         to: storeAddress,
-//         data: withdrawRoyaltiesTx,
-//     }
-//     const txResponse = await smartAccount.sendTransaction( {transaction: tx} )
-//     console.log(txResponse)
-// }
+export const withdrawRoyalties = async (
+        storeContract: ethers.Contract,
+        smartAccount: SmartAccount,
+        setRoyaltiesData: Function
+) => {
+    const withdrawRoyaltiesTx = await storeContract.populateTransaction.withdrawRoyalties()
+    const tx = {
+        to: storeAddress,
+        data: withdrawRoyaltiesTx.data,
+    }
+    const txResponse = await smartAccount.sendTransaction( {transaction: tx} )
+    await txResponse.wait()
+    const royaltiesData = await storeContract.royalties(smartAccount?.address)
+    const convertedRoyaltiesData = ethers.utils.formatEther(royaltiesData.toString())
+    setRoyaltiesData(convertedRoyaltiesData)
+}
 
 export const getRoyaltiesData = async (
         storeContract: ethers.Contract,
-        smartAccount: SmartAccount
+        smartAccount: SmartAccount | null,
+        setRoyaltiesData: Function
 ) => {
-    const royaltiesData = await storeContract.royalties(smartAccount.address)
-    return royaltiesData
+    const royaltiesData = await storeContract.royalties(smartAccount?.address)
+    const convertedRoyaltiesData = ethers.utils.formatEther(royaltiesData.toString())
+    setRoyaltiesData(convertedRoyaltiesData)
 }
 
 export const getArticleOwner = async (
