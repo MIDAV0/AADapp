@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { createArticle, getArticleOwner, purchaseArticle } from "../utils/contractFunctions";
 
 
-const ArticleCard = ({ article, storeContract, smartAccount }) => {
+const ArticleCard = ({ article, storeContract, smartAccount, provider }) => {
     const date = new Date(article.date)
     const [articleOwner, setArticleOwner] = useState<string>("")
     const [isOwner, setIsOwner] = useState<boolean>(false)
@@ -25,7 +25,7 @@ const ArticleCard = ({ article, storeContract, smartAccount }) => {
         }
         setIsLoading(false)
     }, [articleOwner])
-    
+
     return (
         <div key={article.uid} className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
                 <div className='flex justify-center m-2'>
@@ -48,19 +48,31 @@ const ArticleCard = ({ article, storeContract, smartAccount }) => {
                         </p>
                     </div>
 
-                    <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+                    <footer className="flex items-center justify-between leading-none p-4">
                         <a className="flex items-center no-underline hover:underline" href="#">
                             <img alt="Placeholder" className="block rounded-full" src="https://picsum.photos/32/32/?random" />
                             <p className="ml-2 text-sm">
                                 {article.author}
                             </p>
                         </a>
+                        { isOwner &&
+                            <span className="badge bg-green-600 p-4 text-white"
+                                onClick={()=>document.getElementById("my_modal_5").showModal()}
+                            >Purchased</span>
+                        }
+                        { !isOwner && !!smartAccount &&
+                            <button className="border-green-600 border-2 rounded-xl my-auto" 
+                                onClick={()=>document.getElementById("my_modal_6").showModal()}
+                            >
+                                PURCHASE
+                            </button>
+                        }
                     </footer>  
                 </div>
                 {/* Open the modal using ID.showModal() method */}
                 <dialog id="my_modal_5" className="modal">
                     <div className='modal-box flex-col justify-center'>
-                        <div className='border'>   
+                        <div className=''>   
                             <h1 className='text-left'>
                                 {article.title}
                             </h1>                        
@@ -75,18 +87,33 @@ const ArticleCard = ({ article, storeContract, smartAccount }) => {
                         </div>
                     </div>
                 </dialog>
-                <button className="btn" onClick={()=>document.getElementById("my_modal_5").showModal()}>open modal</button>
-                <button className="btn" onClick={()=>
-                    purchaseArticle(
-                        Number(article.uid),
-                        storeContract,
-                        smartAccount
-                    )}>
-                    purchase
-                </button>
-                { isLoading && <p>Loading...</p>}
-                { isOwner && <p>Owner</p>}
-                { !isOwner && !!smartAccount && <p>Not Owner</p>}
+
+                <dialog id="my_modal_6" className="modal">
+                    <div className='modal-box flex-col justify-center'>
+                        <div className=''>   
+                            <h1 className='text-left'>
+                                {article.title}
+                            </h1>
+                            <form method="dialog">
+                                <div className='flex justify-between items-center'>
+                                    <p>Price: <b>{article.price}</b> MATIC</p>                     
+                                    <button
+                                        className="border-green-600 border-2 rounded-xl my-auto"
+                                        onClick={()=>
+                                            purchaseArticle(
+                                                Number(article.uid),
+                                                storeContract,
+                                                smartAccount
+                                            )}
+                                    >
+                                        PURCHASE
+                                    </button>                                    
+                                </div>
+                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
         </div>
     )
 }
