@@ -8,6 +8,7 @@ const ArticleCard = ({ article, storeContract, smartAccount, provider }) => {
     const [articleOwner, setArticleOwner] = useState<string>("")
     const [isOwner, setIsOwner] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isPurchased, setIsPurchased] = useState<boolean>(false)
 
     useEffect(() => {
         setIsLoading(true)
@@ -17,7 +18,7 @@ const ArticleCard = ({ article, storeContract, smartAccount, provider }) => {
             smartAccount,
             setArticleOwner
         )  
-    }, [smartAccount])
+    }, [smartAccount, isPurchased])
 
     useEffect(() => {
         if (articleOwner === smartAccount?.address) {
@@ -57,12 +58,12 @@ const ArticleCard = ({ article, storeContract, smartAccount, provider }) => {
                         </a>
                         { isOwner &&
                             <span className="badge bg-green-600 p-4 text-white"
-                                onClick={()=>document.getElementById("my_modal_5").showModal()}
+                                onClick={()=>document.getElementById(`my_modal_${article.uid-1000}`).showModal()}
                             >Purchased</span>
                         }
                         { !isOwner && !!smartAccount &&
                             <button className="border-green-600 border-2 rounded-xl my-auto" 
-                                onClick={()=>document.getElementById("my_modal_6").showModal()}
+                                onClick={()=>document.getElementById(`my_modal_${article.uid}`).showModal()}
                             >
                                 PURCHASE
                             </button>
@@ -70,7 +71,7 @@ const ArticleCard = ({ article, storeContract, smartAccount, provider }) => {
                     </footer>  
                 </div>
                 {/* Open the modal using ID.showModal() method */}
-                <dialog id="my_modal_5" className="modal">
+                <dialog id={`my_modal_${article.uid-1000}`} className="modal">
                     <div className='modal-box flex-col justify-center'>
                         <div className=''>   
                             <h1 className='text-left'>
@@ -88,10 +89,11 @@ const ArticleCard = ({ article, storeContract, smartAccount, provider }) => {
                     </div>
                 </dialog>
 
-                <dialog id="my_modal_6" className="modal">
+                <dialog id={`my_modal_${article.uid}`} className="modal">
                     <div className='modal-box flex-col justify-center'>
                         <div className=''>   
                             <h1 className='text-left'>
+                                {console.log(article)}
                                 {article.title}
                             </h1>
                             <form method="dialog">
@@ -103,7 +105,8 @@ const ArticleCard = ({ article, storeContract, smartAccount, provider }) => {
                                             purchaseArticle(
                                                 Number(article.uid),
                                                 storeContract,
-                                                smartAccount
+                                                smartAccount,
+                                                setIsPurchased
                                             )}
                                     >
                                         PURCHASE
