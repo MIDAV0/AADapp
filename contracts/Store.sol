@@ -20,14 +20,10 @@ contract Store {
     mapping(uint => ArticleInfo) public articles;
     mapping(address => uint) public royalties;
     
-
-    uint public totalOwnedArticles;
-
     address public owner;
 
     constructor() {
         owner = msg.sender;
-        totalOwnedArticles = 0;
     }
 
     function purchaseArticle(uint articleId) external payable {
@@ -36,9 +32,8 @@ contract Store {
         require(articles[articleId].creator != address(0), "Article does not exist");
         require(ownedArticles[articleHash].owner != msg.sender, "You already purchased this article");
         require(msg.value >= articles[articleId].price, "Incorrect price");
-        uint id = totalOwnedArticles++;
         ownedArticles[articleHash] = Article(
-            id, 
+            articleId, 
             msg.sender);
         royalties[articles[articleId].creator] += msg.value;
     }
