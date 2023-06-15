@@ -157,11 +157,11 @@ const Home = () => {
         scwAddress={scwAddress}
       />
       <div className={styles.container}>
-        <div className="border-2 ">
+        <div className="p-8">
           <h1>Welcome to Crypto News</h1>
           {!provider &&
-            <div>
-              <p>Connect Wallet to continue</p>
+            <div className="flex">
+              <p className="bg-red-600 rounded-lg p-2 text-white font-bold text-xl">Connect Wallet to continue</p>
             </div>
           }
         </div>
@@ -169,6 +169,7 @@ const Home = () => {
       <PageBody 
         smartAccount={smartAccount}
         storeContract={storeContract}
+        provider={provider}
       />
     </div>
   );
